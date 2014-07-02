@@ -15,9 +15,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
-
     <!-- Angular Files -->
     <script src="js/angular.min.js" type="text/javascript"></script>
     <script src="js/angular-resource.min.js" type="text/javascript"></script>
@@ -25,6 +22,14 @@
 
     <!-- AngularUI for Bootstrap -->
     <script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+
+
+    <script src="js/position.js"></script>
+    <script src="js/timepicker.js"></script>
+    <script src="js/timepicker-tpl.js"></script>
 
 </head>
 
@@ -116,52 +121,60 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>source</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>detect</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>report</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>fqdn</button>
+                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>detect time</button>
+                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>import time</button>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>source</button>
+                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>detect time</button>
+                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>import time</button>
                 </div>
             </div>
             <p></p>
             <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-3" ng-controller="TimepickerMinCtrl">
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMinCtrl">
                     <div class="input-group">
-                        <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                        <input sy-timepicker-popup="HH:mm:ss" class="form-control" ng-model="date" show-meridian="false" is-open="opened" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="open($event)">
+                                <i class="glyphicon glyphicon-time"></i>
+                            </button>
+                        </span>
                     </div><!-- /input-group -->
+                    <pre class="alert alert-info">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-3" ng-controller="DatepickerMinCtrl">
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMinCtrl">
                     <div class="input-group date">
-                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-3" ng-controller="TimepickerMaxCtrl">
-                    <div class="input-group">
-                        <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
                     </div><!-- /input-group -->
+                    <pre class="alert alert-info">Min: {{date | date:'dd-mm-yyyy' }}</pre>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-3" ng-controller="DatepickerMaxCtrl">
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMaxCtrl">
+                    <div class="input-group">
+                        <input sy-timepicker-popup="HH:mm:ss" class="form-control" ng-model="date" show-meridian="false" is-open="opened" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="open($event)">
+                                <i class="glyphicon glyphicon-time"></i>
+                            </button>
+                        </span>
+                    </div><!-- /input-group -->
+                    <pre class="alert alert-info">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMaxCtrl">
                     <div class="input-group date">
-                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
-                    </div>
+                    </div><!-- /input-group -->
+                    <pre class="alert alert-info">Max: {{date | date:'dd-mm-yyyy' }}</pre>
                 </div>
             </div>
 
             <p></p>
-
-
-            <p></p>
-
-
-
-
-            <p></p>
-
-
 
 
             <div>
@@ -175,8 +188,8 @@
                             <td></td><td></td>
                         </tr>
                         <tr>
-                            <td><small><strong>detect time:</strong></small></td><td><small>{{event.detecttime}}</small></td>
-                            <td><small><strong>report time:</strong></small></td><td><small>{{event.reporttime}}</small></td>
+                            <td><small><strong>detect time:</strong></small></td><td><small>{{event.detect_time}}</small></td>
+                            <td><small><strong>import time:</strong></small></td><td><small>{{event.import_time}}</small></td>
                         </tr>
                         <tr ng-repeat="domain in event.observables.fqdn">
                             <td><small><strong>fqdn:</strong></small></td><td><small>{{domain.fqdn}}</small></td>
