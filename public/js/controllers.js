@@ -14,6 +14,10 @@ app.controller("SearchCtrl", function($scope, $http) {
   // ngShow boolean
   $scope.searched = false;
 
+  // Sort initial type
+  $scope.orderBy = 'import_time';
+  $scope.order = 'desc';
+
   // Pagination Settings
   $scope.itemsPerPage = 20;
   $scope.maxSize = 10;
@@ -42,6 +46,41 @@ app.controller("SearchCtrl", function($scope, $http) {
     }
   };
 
+  // Sort button functions
+  $scope.sortDetect = function() {
+    if ($scope.orderBy === 'detect_time') {
+      if ($scope.order === 'desc') {
+        $scope.order = 'asc';
+      }
+      else {
+        $scope.order = 'desc';
+      }
+    }
+    else {
+      $scope.order = 'desc';
+      $scope.orderBy = 'detect_time';
+    }
+  };
+
+  $scope.sortImport = function() {
+    if ($scope.orderBy === 'import_time') {
+      if ($scope.order === 'desc') {
+        $scope.order = 'asc';
+      }
+      else {
+        $scope.order = 'desc';
+      }
+    }
+    else {
+      $scope.order = 'desc';
+      $scope.orderBy = 'import_time';
+    }
+  };
+
+  $scope.sortSource = function() {
+
+  };
+
   // Pagination Settings
   $scope.setPage = function (pageNo) {
     $scope.currentPage = pageNo;
@@ -59,6 +98,14 @@ app.controller("SearchCtrl", function($scope, $http) {
     $scope.current();
   });
 
+  $scope.$watch ('orderBy', function () {
+    $scope.current();
+  });
+
+  $scope.$watch ('order', function () {
+    $scope.current();
+  });
+
 
   // API requests Function
   $scope.current = function () {
@@ -66,7 +113,8 @@ app.controller("SearchCtrl", function($scope, $http) {
         {
           start: 1 + ( ($scope.currentPage-1) * 10),
           per_page: $scope.itemsPerPage,
-          order_by: 'import_time',
+          order_by: $scope.orderBy,
+          order: $scope.order,
           timing: 1,
           fqdn: $scope.term
         }).
@@ -110,8 +158,7 @@ var DatepickerMinCtrl = function ($scope) {
     startingDay: 1
   };
 
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
+  $scope.format = 'MMMM dd, yyyy';
 };
 
 var TimepickerMinCtrl = function ($scope) {
@@ -148,9 +195,7 @@ var DatepickerMaxCtrl = function ($scope) {
     startingDay: 1
   };
 
-  $scope.initDate = new Date('2016-15-20');
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
+  $scope.format = 'MMMM dd, yyyy';
 };
 
 var TimepickerMaxCtrl = function ($scope) {

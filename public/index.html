@@ -69,6 +69,15 @@
                 <!-- <li><a href="#">Settings</a></li> -->
 
             </ul>
+
+            <p class="text-info">
+                <small><strong>Sort by: </strong><mark>{{orderBy}}</mark></small>
+            </p>
+            <p class="text-info">
+                <small><strong>Order: </strong><mark>{{order}}</mark></small>
+            </p>
+
+
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -89,7 +98,7 @@
                     <!--<option value="md5-hash"> MD5 </option>-->
                     <!--<option value="sha256-hash"> SHA256 </option>-->
                 </select>
-                <input ng-model="search.term" class="input input-lg form-control" type="text" placeholder="Search...">
+                <input ng-model="search.term" class="input input-lg form-control" type="text" name="search-term" id="searchTerm" placeholder="Search...">
                 <button class="btn btn-default btn-lg" ng-click="update(search)"><span class="glyphicon glyphicon-search"></span></button>
             </form>
 
@@ -121,8 +130,9 @@
             <div ng-show="searched" class="row ng-hide">
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>source</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>detect time</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>import time</button>
+                    <button type="button" class="btn btn-default" ng-click="sortDetect()"><span class="glyphicon glyphicon-sort"></span>detect time</button>
+                    <button type="button" class="btn btn-default" ng-click="sortImport()"><span class="glyphicon glyphicon-sort"></span>import time</button>
+
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>source</button>
@@ -144,7 +154,7 @@
                             </button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
+                    <pre class="alert-sm alert-default">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMinCtrl">
                     <div class="input-group date">
@@ -153,7 +163,7 @@
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Min: {{date | date:'dd-mm-yyyy' }}</pre>
+                    <pre class="alert-sm alert-default">Min: {{date | date:'MM-dd-yyyy' }}</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMaxCtrl">
                     <div class="input-group">
@@ -164,7 +174,7 @@
                             </button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
+                    <pre class="alert-sm alert-default">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMaxCtrl">
                     <div class="input-group date">
@@ -173,7 +183,7 @@
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Max: {{date | date:'dd-mm-yyyy' }}</pre>
+                    <pre class="alert-sm alert-default">Max: {{date | date:'MM-dd-yyyy' }}</pre>
                 </div>
             </div>
 
@@ -188,7 +198,7 @@
                             </button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
+                    <pre class="alert-sm alert-warning">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMinCtrl">
                     <div class="input-group date">
@@ -197,7 +207,7 @@
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Min: {{date | date:'dd-mm-yyyy' }}</pre>
+                    <pre class="alert-sm alert-warning">Min: {{date | date:'MM-dd-yyyy' }}</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMaxCtrl">
                     <div class="input-group">
@@ -208,7 +218,7 @@
                             </button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
+                    <pre class="alert-sm alert-warning">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMaxCtrl">
                     <div class="input-group date">
@@ -217,7 +227,7 @@
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                     </div>
-                    <pre class="alert-sm alert-info">Max: {{date | date:'dd-mm-yyyy' }}</pre>
+                    <pre class="alert-sm alert-warning">Max: {{date | date:'dd-mm-yyyy' }}</pre>
                 </div>
             </div>
 
@@ -225,7 +235,7 @@
 
             <div ng-show="searched" class="row ng-hide">
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                    <a href="#"><span class="badge alert-info">All Events {{totalItems}}</span></a>
+                    <a href="#"><span class="badge alert-danger">All Events {{totalItems}}</span></a>
                 </div>
             </div>
 
