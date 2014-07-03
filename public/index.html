@@ -93,7 +93,7 @@
                 <button class="btn btn-default btn-lg" ng-click="update(search)"><span class="glyphicon glyphicon-search"></span></button>
             </form>
 
-            <div class="row placeholders">
+            <div ng-show="searched" class="row placeholders ng-hide">
                 <div class="col-xs-6 col-sm-3 placeholder">
                     <h4>First Seen</h4>
                     <h1 class="lead text-info"><strong>32 days ago</strong></h1>
@@ -118,7 +118,7 @@
 
 
             <!--<h2 class="sub-header">Section title</h2>-->
-            <div class="row">
+            <div ng-show="searched" class="row ng-hide">
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>source</button>
                     <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-sort"></span>detect time</button>
@@ -126,12 +126,15 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>source</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>detect time</button>
-                    <button type="button" class="btn btn-default" disabled="disabled"><span class="glyphicon glyphicon-filter"></span>import time</button>
+                    <button type="button" class="btn btn-default" ng-click="isCollapsedDetect = !isCollapsedDetect"><span class="glyphicon glyphicon-filter"></span>detect time</button>
+                    <button type="button" class="btn btn-default" ng-click="isCollapsedImport = !isCollapsedImport"><span class="glyphicon glyphicon-filter"></span>import time</button>
                 </div>
             </div>
+
             <p></p>
-            <div class="row">
+
+            <!-- Detect Time Collapsed Filter -->
+            <div class="row" collapse="isCollapsedDetect">
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMinCtrl">
                     <div class="input-group">
                         <input sy-timepicker-popup="HH:mm:ss" class="form-control" ng-model="date" show-meridian="false" is-open="opened" />
@@ -140,8 +143,8 @@
                                 <i class="glyphicon glyphicon-time"></i>
                             </button>
                         </span>
-                    </div><!-- /input-group -->
-                    <pre class="alert alert-info">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
+                    </div>
+                    <pre class="alert-sm alert-info">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMinCtrl">
                     <div class="input-group date">
@@ -149,8 +152,8 @@
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
-                    </div><!-- /input-group -->
-                    <pre class="alert alert-info">Min: {{date | date:'dd-mm-yyyy' }}</pre>
+                    </div>
+                    <pre class="alert-sm alert-info">Min: {{date | date:'dd-mm-yyyy' }}</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMaxCtrl">
                     <div class="input-group">
@@ -160,8 +163,8 @@
                                 <i class="glyphicon glyphicon-time"></i>
                             </button>
                         </span>
-                    </div><!-- /input-group -->
-                    <pre class="alert alert-info">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
+                    </div>
+                    <pre class="alert-sm alert-info">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMaxCtrl">
                     <div class="input-group date">
@@ -169,15 +172,66 @@
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
-                    </div><!-- /input-group -->
-                    <pre class="alert alert-info">Max: {{date | date:'dd-mm-yyyy' }}</pre>
+                    </div>
+                    <pre class="alert-sm alert-info">Max: {{date | date:'dd-mm-yyyy' }}</pre>
+                </div>
+            </div>
+
+            <!-- Import Time Collapsed Filter -->
+            <div class="row" collapse="isCollapsedImport">
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMinCtrl">
+                    <div class="input-group">
+                        <input sy-timepicker-popup="HH:mm:ss" class="form-control" ng-model="date" show-meridian="false" is-open="opened" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="open($event)">
+                                <i class="glyphicon glyphicon-time"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <pre class="alert-sm alert-info">Min: {{date | date:'HH:mm:ss' }}GMT</pre>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMinCtrl">
+                    <div class="input-group date">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                    <pre class="alert-sm alert-info">Min: {{date | date:'dd-mm-yyyy' }}</pre>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="TimepickerMaxCtrl">
+                    <div class="input-group">
+                        <input sy-timepicker-popup="HH:mm:ss" class="form-control" ng-model="date" show-meridian="false" is-open="opened" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="open($event)">
+                                <i class="glyphicon glyphicon-time"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <pre class="alert-sm alert-info">Max: {{date | date:'HH:mm:ss' }}GMT</pre>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 text-center" ng-controller="DatepickerMaxCtrl">
+                    <div class="input-group date">
+                        <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                    <pre class="alert-sm alert-info">Max: {{date | date:'dd-mm-yyyy' }}</pre>
                 </div>
             </div>
 
             <p></p>
 
+            <div ng-show="searched" class="row ng-hide">
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                    <a href="#"><span class="badge alert-info">All Events {{totalItems}}</span></a>
+                </div>
+            </div>
 
-            <div>
+            <p></p>
+
+            <div ng-show="searched" class="row ng-hide">
                 <div class="table-responsive">
                     <table class="table table-condensed table-hover">
                         <thead>
@@ -211,12 +265,7 @@
                     </table>
                 </div>
 
-                <div class="pagination">
-                    <li class="disabled"><a href="#">&laquo;</a></li>
-                    <li class="disabled"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                    <li class="disabled"><a href="#">2</a></li>
-                    <li class="disabled"><a href="#">&raquo;</a></li>
-                </div>
+                <pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
             </div>
         </div>
         </div>

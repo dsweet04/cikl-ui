@@ -11,9 +11,19 @@ var app = angular.module('ciklApp', [
 app.controller("SearchCtrl", function($scope, $http) {
   $scope.term = {};
 
+  // ngShow boolean
+  $scope.searched = false;
+
+  // Pagination Settings
+  $scope.itemsPerPage = 20;
+  $scope.maxSize = 10;
+  $scope.currentPage = 1;
+
+  // Search page top form requests
   $scope.update = function(search) {
     $scope.term = search.term;
     $scope.type = search.type;
+
 
     if ($scope.type === 'ip-address') {
       $http.post('http://localhost:8080/api/v1/query/ipv4.json', {ipv4:$scope.term}).
@@ -21,27 +31,60 @@ app.controller("SearchCtrl", function($scope, $http) {
             $scope.query = data;
           }).
           then(function() {
+            $scope.searched = true;
+
+            // Pagination Settings
+            $scope.totalItems = parseInt($scope.query.total_events);
           });
     }
     else if ($scope.type === 'dns') {
-      $http.post('http://localhost:8080/api/v1/query/fqdn.json',
-          {
-            start:1,
-            per_page:20,
-            order_by:'import_time',
-            order:'asc',
-            timing:1,
-            fqdn:$scope.term
-          }).
-          success(function (data) {
-            $scope.query = data;
-          }).
-          then(function() {
-          });
+      $scope.current();
     }
-  }
+  };
 
-});
+  // Pagination Settings
+  $scope.setPage = function (pageNo) {
+    $scope.currentPage = pageNo;
+  };
+
+  $scope.pageChanged = function() {
+    console.log('Page changed to: ' + $scope.currentPage);
+  };
+
+  // Filter Button Collapse Initial state
+  $scope.isCollapsedImport = true;
+  $scope.isCollapsedDetect = true;
+
+  $scope.$watch ('currentPage', function () {
+    $scope.current();
+  });
+
+
+  // API requests Function
+  $scope.current = function () {
+    $http.post('http://localhost:8080/api/v1/query/fqdn.json',
+        {
+          start: 1 + ( ($scope.currentPage-1) * 10),
+          per_page: $scope.itemsPerPage,
+          order_by: 'import_time',
+          timing: 1,
+          fqdn: $scope.term
+        }).
+        success(function (data) {
+          $scope.query = data;
+        }).
+        then(function() {
+          $scope.searched = true;
+
+          // Pagination Settings
+          $scope.totalItems = parseInt($scope.query.total_events);
+        }
+    );
+  };
+
+
+
+}); // End searchCtrl
 
 
 var DatepickerMinCtrl = function ($scope) {
